@@ -28,7 +28,7 @@ To use this script, run it from the command line with the path to your CSV file 
 
 ```bash
 ./csv_cleaner.sh data.csv
-
+```
 
 
 ## Contributions
