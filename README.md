@@ -18,9 +18,6 @@ You can run this project using basic Linux utilities available on most systems. 
 - `sort`
 - `uniq`
 
-Alternatively, you can install additional CSV tools for more complex manipulations:
-- `csvtool` (optional)
-- `csvkit` (optional)
 
 ## Usage
 
