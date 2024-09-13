@@ -30,4 +30,4 @@ To use this script, run it from the command line with the path to your CSV file 
 
 ## Contributions
 
-Feel free to submit pull requests or raise issues to improve this project. All contributions are welcome!  [Guide] (https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project)
+Feel free to submit pull requests or raise issues to improve this project. All contributions are welcome!  [Guide](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project)
