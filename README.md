@@ -30,3 +30,7 @@ To use this script, run it from the command line with the path to your CSV file 
 ./csv_cleaner.sh data.csv
 
 
+
+## Contributions
+
+Feel free to submit pull requests or raise issues to improve this project. All contributions are welcome!
