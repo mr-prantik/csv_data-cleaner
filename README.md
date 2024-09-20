@@ -24,7 +24,12 @@ You can run this project using basic Linux utilities available on most systems. 
 To use this script, run it from the command line with the path to your CSV file as an argument:
 
 ```bash
-./csv_cleaner.sh data.csv
+./csv_cleaner.sh --help
+```
+
+Example
+```
+./csv_cleaner.sh -e -d -s -c data.csv
 ```
 
 
