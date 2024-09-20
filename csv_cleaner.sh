@@ -1,20 +1,44 @@
 #!/bin/bash
 
+# Function to check if the file exists and is a valid CSV
+check_file() {
+    if [ ! -f "$1" ]; then
+        echo "Error: File '$1' not found!"
+        exit 1
+    fi
+
+    # Check if the file is a valid CSV by checking the extension
+    if [[ "$1" != *.csv ]]; then
+        echo "Error: '$1' is not a CSV file!"
+        exit 1
+    fi
+
+    # Check for malformed CSV by verifying consistent column counts
+    local column_count=$(head -1 "$1" | awk -F, '{print NF}')
+    while IFS= read -r line; do
+        local line_count=$(echo "$line" | awk -F, '{print NF}')
+        if [ "$line_count" -ne "$column_count" ]; then
+            echo "Error: Malformed CSV detected! Line with inconsistent columns: '$line'"
+            exit 1
+        fi
+    done < "$1"
+}
+
 # Function to remove empty rows
 remove_empty_rows() {
-    awk 'NF > 0' $1 > temp.csv && mv temp.csv $1
+    awk 'NF > 0' "$1" > temp.csv && mv temp.csv "$1"
     echo "Empty rows removed."
 }
 
 # Function to remove duplicate rows
 remove_duplicates() {
-    sort $1 | uniq > temp.csv && mv temp.csv $1
+    sort "$1" | uniq > temp.csv && mv temp.csv "$1"
     echo "Duplicates removed."
 }
 
 # Function to remove special characters
 remove_special_chars() {
-    sed 's/[^a-zA-Z0-9,]//g' $1 > temp.csv && mv temp.csv $1
+    sed 's/[^a-zA-Z0-9,]//g' "$1" > temp.csv && mv temp.csv "$1"
     echo "Special characters removed."
 }
 
@@ -25,7 +49,7 @@ remove_empty_columns() {
             if ($i != "")
                 printf "%s%s", $i, (i==NF ? "\n" : FS)
         }
-    }' $1 > temp.csv && mv temp.csv $1
+    }' "$1" > temp.csv && mv temp.csv "$1"
     echo "Empty columns removed."
 }
 
@@ -41,10 +65,13 @@ if [ -z "$1" ]; then
     usage
 fi
 
+# Check if the file is valid
+check_file "$1"
+
 # Perform CSV cleaning operations
-remove_empty_rows $1
-remove_duplicates $1
-remove_special_chars $1
-remove_empty_columns $1
+remove_empty_rows "$1"
+remove_duplicates "$1"
+remove_special_chars "$1"
+remove_empty_columns "$1"
 
 echo "CSV cleaning complete!"
