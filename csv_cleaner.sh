@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Initialize flags
+REMOVE_EMPTY_ROWS=false
+REMOVE_DUPLICATES=false
+REMOVE_SPECIAL_CHARS=false
+REMOVE_EMPTY_COLUMNS=false
+
 # Function to check if the file exists and is a valid CSV
 check_file() {
     if [ ! -f "$1" ]; then
@@ -55,23 +61,64 @@ remove_empty_columns() {
 
 # Function to display usage instructions
 usage() {
-    echo "Usage: $0 [csv_file]"
-    echo "Example: ./csv_cleaner.sh data.csv"
+    echo "Usage: $0 [OPTIONS] [csv_file]"
+    echo "Options:"
+    echo "  -e, --empty-rows         Remove empty rows"
+    echo "  -d, --duplicates         Remove duplicate rows"
+    echo "  -s, --special-chars      Remove special characters"
+    echo "  -c, --empty-columns      Remove empty columns"
+    echo "  -h, --help               Display this help and exit"
+    echo "Example: ./csv_cleaner.sh -e -d -s -c data.csv"
     exit 1
 }
 
-# Check if a file argument is provided
-if [ -z "$1" ]; then
+# Parse command-line arguments
+if [ $# -eq 0 ]; then
+    usage
+fi
+
+# Read flags
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -e|--empty-rows)
+            REMOVE_EMPTY_ROWS=true
+            shift
+            ;;
+        -d|--duplicates)
+            REMOVE_DUPLICATES=true
+            shift
+            ;;
+        -s|--special-chars)
+            REMOVE_SPECIAL_CHARS=true
+            shift
+            ;;
+        -c|--empty-columns)
+            REMOVE_EMPTY_COLUMNS=true
+            shift
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            CSV_FILE="$1"
+            shift
+            ;;
+    esac
+done
+
+# Check if a CSV file is provided
+if [ -z "$CSV_FILE" ]; then
+    echo "Error: No CSV file provided."
     usage
 fi
 
 # Check if the file is valid
-check_file "$1"
+check_file "$CSV_FILE"
 
-# Perform CSV cleaning operations
-remove_empty_rows "$1"
-remove_duplicates "$1"
-remove_special_chars "$1"
-remove_empty_columns "$1"
+# Perform selected CSV cleaning operations
+$REMOVE_EMPTY_ROWS && remove_empty_rows "$CSV_FILE"
+$REMOVE_DUPLICATES && remove_duplicates "$CSV_FILE"
+$REMOVE_SPECIAL_CHARS && remove_special_chars "$CSV_FILE"
+$REMOVE_EMPTY_COLUMNS && remove_empty_columns "$CSV_FILE"
 
 echo "CSV cleaning complete!"
