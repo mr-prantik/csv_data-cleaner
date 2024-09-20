@@ -32,6 +32,12 @@ Example
 ./csv_cleaner.sh -e -d -s -c data.csv
 ```
 
+### Command-Line Options
+- **-e**, --empty-rows: Remove empty rows from the CSV.
+- **-d**, --duplicates: Remove duplicate rows from the CSV.
+- **-s**, --special-chars: Remove special characters from the CSV.
+- **-c**, --empty-columns: Remove empty columns from the CSV.
+
 
 ## Contributions
 
